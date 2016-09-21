@@ -117,7 +117,7 @@
                   "limits": {
                     "memory": "${MEMORY_LIMIT}"
                   }
-                }
+                },
                 "terminationMessagePath": "/dev/termination-log",
                 "imagePullPolicy": "IfNotPresent",
                 "capabilities": {},
@@ -181,7 +181,7 @@
       "from": "[a-zA-Z0-9]{16}",
       "value": "postgres",
       "required": true
-    }
+    },
     {
       "name": "POSTGRESQL_DATABASE",
       "displayName": "PostgreSQL Database Name",
