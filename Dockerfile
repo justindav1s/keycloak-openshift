@@ -12,19 +12,19 @@ LABEL io.k8s.description="Image for building Keycloak deployments" \
       io.openshift.s2i.scripts-url="image:///usr/libexec/s2i"
 
 
-RUN sudo yum -y update
-RUN sudo yum -y install wget curl git
-RUN sudo yum clean all -y
+#RUN sudo yum -y update
+#RUN sudo yum -y install wget curl git
+#RUN sudo yum clean all -y
 
-RUN mkdir -p /ib/appl
-WORKDIR /ib/appl
+#RUN mkdir -p /ib/appl
+#WORKDIR /ib/appl
 
 RUN mkdir -p /usr/libexec/s2i
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
-RUN chgrp -R 0 /ib/appl
-RUN chmod -R g+rw /ib/appl
-RUN find /ib/appl -type d -exec chmod g+x {} +
+#RUN chgrp -R 0 /ib/appl
+#RUN chmod -R g+rw /ib/appl
+#RUN find /ib/appl -type d -exec chmod g+x {} +
 
 USER 1001
 
