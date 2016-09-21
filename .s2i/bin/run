@@ -7,4 +7,5 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
+echo /opt/jboss/keycloak/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 exec /opt/jboss/keycloak/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
