@@ -16,6 +16,8 @@ USER root
 RUN mkdir -p /usr/libexec/s2i
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
+chown -R 1001:1001 /opt/jboss
+
 USER 1001
 
 EXPOSE 8080
