@@ -7,14 +7,14 @@ ENV BUILDER_VERSION 1.0
 
 LABEL io.k8s.description="Image for building Keycloak deployments" \
       io.k8s.display-name="Keycloak builder 1.0.0" \
-      io.openshift.expose-services="6379:tcp" \
+      io.openshift.expose-services="8080:tcp" \
       io.openshift.tags="builder,1.0.0,keycloak,oauth,security" \
       io.openshift.s2i.scripts-url="image:///usr/libexec/s2i"
 
 
-RUN yum -y update
-RUN yum -y install wget curl git
-RUN yum clean all -y
+RUN sudo yum -y update
+RUN sudo yum -y install wget curl git
+RUN sudo yum clean all -y
 
 RUN mkdir -p /ib/appl
 WORKDIR /ib/appl
