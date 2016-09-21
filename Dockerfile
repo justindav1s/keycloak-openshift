@@ -20,4 +20,6 @@ USER 1001
 
 EXPOSE 8080
 
+ENTRYPOINT []
+
 CMD ["/usr/libexec/s2i/usage"]
