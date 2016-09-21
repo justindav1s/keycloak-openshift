@@ -1,0 +1,14 @@
+#!/bin/bash -e
+cat <<EOF
+This is the keycloak S2I image:
+To use it, install S2I: https://github.com/justindav1s/s2i-keycloak.git
+
+git clone https://github.com/justindav1s/s2i-keycloak.git
+
+Sample invocation:
+
+s2i build git://<source code> keycloak <application image>
+
+You can then run the resulting image via:
+docker run <application image>
+EOF
