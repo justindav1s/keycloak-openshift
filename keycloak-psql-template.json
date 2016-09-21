@@ -1,0 +1,196 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "keycloak-psql-persistent",
+    "creationTimestamp": null,
+    "annotations": {
+      "description": "Keycloak service, with persistent storage in Postgres.",
+      "iconClass": "icon-jboss",
+      "tags": "iberia,security,keycloak"
+    }
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${KEYCLOAK_SERVICE_NAME}",
+        "creationTimestamp": null
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "keycloak",
+            "protocol": "TCP",
+            "port": 9999,
+            "targetPort": 9999,
+            "nodePort": 0
+          }
+        ],
+        "selector": {
+          "name": "${KEYCLOAK_SERVICE_NAME}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${KEYCLOAK_SERVICE_NAME}",
+        "creationTimestamp": null
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ImageChange",
+            "imageChangeParams": {
+              "automatic": true,
+              "containerNames": [
+                "keycloak"
+              ],
+              "from": {
+                "kind": "ImageStreamTag",
+                "name": "jboss/keycloak-postgres",
+                "namespace": "${NAMESPACE}"
+              },
+              "lastTriggeredImage": ""
+            }
+          },
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${KEYCLOAK_SERVICE_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "creationTimestamp": null,
+            "labels": {
+              "name": "${KEYCLOAK_SERVICE_NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "keycloak",
+                "image": " ",
+                "ports": [
+                  {
+                    "containerPort": 9999,
+                    "protocol": "TCP"
+                  }
+                ],
+                "livenessProbe": {
+                  "timeoutSeconds": 1,
+                  "initialDelaySeconds": 30,
+                  "tcpSocket": {
+                    "port": 9999
+                  }
+                },
+                "env": [
+                  {
+                    "name": "POSTGRESQL_USER",
+                    "value": "${POSTGRESQL_USER}"
+                  },
+                  {
+                    "name": "POSTGRESQL_PASSWORD",
+                    "value": "${POSTGRESQL_PASSWORD}"
+                  },
+                  {
+                    "name": "POSTGRESQL_DATABASE",
+                    "value": "${POSTGRESQL_DATABASE}"
+                  },
+                  {
+                    "name": "POSTGRESQL_ROOT_PASSWORD",
+                    "value": "${POSTGRESQL_ROOT_PASSWORD}"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                }
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {},
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      },
+      "status": {}
+    }
+  ],
+  "parameters": [
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the container can use.",
+      "value": "2048Mi"
+    },
+    {
+      "name": "NAMESPACE",
+      "displayName": "Namespace",
+      "description": "The OpenShift Namespace where the ImageStream resides.",
+      "value": "openshift"
+    },
+    {
+      "name": "KEYCLOAK_SERVICE_NAME",
+      "displayName": "Keycloak Service Name",
+      "description": "The name of the OpenShift Service exposed for Keycloak.",
+      "value": "keycloak",
+      "required": true
+    },
+    {
+      "name": "POSTGRESQL_USER",
+      "displayName": "PostgreSQL Connection Username",
+      "description": "Username for PostgreSQL user that will be used for accessing the database.",
+      "generate": "expression",
+      "from": "user[A-Z0-9]{3}",
+      "value": "keycloak",
+      "required": true
+    },
+    {
+      "name": "POSTGRESQL_PASSWORD",
+      "displayName": "PostgreSQL Connection Password",
+      "description": "Password for the PostgreSQL connection user.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{16}",
+      "value": "keycloak",
+      "required": true
+    },
+    {
+      "name": "POSTGRESQL_ROOT_PASSWORD",
+      "displayName": "PostgreSQL Connection Password",
+      "description": "Password for the PostgreSQL root user.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{16}",
+      "value": "postgres",
+      "required": true
+    }
+    {
+      "name": "POSTGRESQL_DATABASE",
+      "displayName": "PostgreSQL Database Name",
+      "description": "Name of the PostgreSQL database accessed.",
+      "value": "keycloak",
+      "required": true
+    }
+  ],
+  "labels": {
+    "template": "keycloak-psql-template"
+  }
+}
