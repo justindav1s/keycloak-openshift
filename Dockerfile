@@ -16,7 +16,7 @@ USER root
 RUN mkdir -p /usr/libexec/s2i
 COPY ./.s2i/bin/ /usr/libexec/s2i
 
-USER 1001
+USER jboss
 
 EXPOSE 8080
 
