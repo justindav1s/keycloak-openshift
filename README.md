@@ -26,3 +26,14 @@ docker login -u justin -e justin.davis@ba.com -p ........ 172.30.88.121:5000
 
 docker tag ib-keycloak 172.30.88.121:5000/openshift/ib-keycloak
 docker push 172.30.88.121:5000/openshift/ib-keycloak
+
+
+oadm policy add-scc-to-user anyuid -z default
+oc edit scc anyuid
+
+docker pull jboss/keycloak-postgres
+docker tag jboss/keycloak-postgres 172.30.88.121:5000/openshift/keycloak-postgres
+docker push 172.30.88.121:5000/openshift/keycloak-postgres
+oc new-app keycloak-postgres
+oc deploy keycloak-postgres --cancel
+oc deploy keycloak-postgres --latest
