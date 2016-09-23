@@ -28,7 +28,7 @@ RUN cd /ib/appl/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSI
 
 ADD scripts/docker-entrypoint.sh /ib/appl/
 
-RUN cd /ib/appl/ && curl -L http://central.maven.org/maven2/net/sf/saxon/Saxon-HE/9.7.0-8/Saxon-HE-9.7.0-8.jar && mv /ib/appl/Saxon-HE-9.7.0-8.jar /ib/appl/saxon.jar
+RUN cd /ib/appl/ && wget http://central.maven.org/maven2/net/sf/saxon/Saxon-HE/9.7.0-8/Saxon-HE-9.7.0-8.jar && mv /ib/appl/Saxon-HE-9.7.0-8.jar /ib/appl/saxon.jar
 
 ADD scripts/setLogLevel.xsl /ib/appl/keycloak/
 RUN java -jar /ib/appl/saxon.jar -s:/ib/appl/keycloak/standalone/configuration/standalone.xml -xsl:/ib/appl/keycloak/setLogLevel.xsl -o:/ib/appl//keycloak/standalone/configuration/standalone.xml
