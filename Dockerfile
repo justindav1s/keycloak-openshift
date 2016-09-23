@@ -26,15 +26,15 @@ WORKDIR /ib/appl
 
 RUN cd /ib/appl/ && curl -L https://downloads.jboss.org/keycloak/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz | tar zx && mv /ib/appl/keycloak-$KEYCLOAK_VERSION /ib/appl/keycloak
 
-ADD docker-entrypoint.sh /ib/appl/
+ADD scripts/docker-entrypoint.sh /ib/appl/
 
-ADD setLogLevel.xsl /ib/appl/keycloak/
+ADD scripts/setLogLevel.xsl /ib/appl/keycloak/
 RUN java -jar /usr/share/java/saxon.jar -s:/ib/appl/keycloak/standalone/configuration/standalone.xml -xsl:/ib/appl/keycloak/setLogLevel.xsl -o:/ib/appl//keycloak/standalone/configuration/standalone.xml
 
-ADD changeDatabase.xsl /ib/appl/keycloak/
+ADD scripts/changeDatabase.xsl /ib/appl/keycloak/
 RUN java -jar /usr/share/java/saxon.jar -s:/ib/appl/keycloak/standalone/configuration/standalone.xml -xsl:/ib/appl/keycloak/changeDatabase.xsl -o:/ib/appl/keycloak/standalone/configuration/standalone.xml; java -jar /usr/share/java/saxon.jar -s:/ib/appl/keycloak/standalone/configuration/standalone-ha.xml -xsl:/ib/appl/keycloak/changeDatabase.xsl -o:/ib/appl/keycloak/standalone/configuration/standalone-ha.xml; rm /ib/appl/keycloak/changeDatabase.xsl
 RUN mkdir -p /ib/appl/keycloak/modules/system/layers/base/org/postgresql/jdbc/main; cd /ib/appl/keycloak/modules/system/layers/base/org/postgresql/jdbc/main; curl -O http://central.maven.org/maven2/org/postgresql/postgresql/9.3-1102-jdbc3/postgresql-9.3-1102-jdbc3.jar
-ADD module.xml /ib/appl/keycloak/modules/system/layers/base/org/postgresql/jdbc/main/
+ADD scripts/module.xml /ib/appl/keycloak/modules/system/layers/base/org/postgresql/jdbc/main/
 
 RUN mkdir -p /usr/libexec/s2i
 COPY ./.s2i/bin/ /usr/libexec/s2i
