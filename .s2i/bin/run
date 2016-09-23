@@ -11,4 +11,4 @@ export KEYCLOAK_LOGLEVEL=INFO
 
 env
 
-echo /ib/appl/docker-entrypoint.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+exec /ib/appl/docker-entrypoint.sh -b 0.0.0.0 -bmanagement 0.0.0.0
