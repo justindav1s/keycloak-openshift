@@ -8,12 +8,12 @@
 #
 
 echo KEYCLOAK VARIABLES
-env | grep KEYCLOAK
+env | grep KEYCLOAK | sort
 
 echo ""
 
 echo POSTRGESQL VARIABLES
-env | grep POSTRGESQL
+env | grep POSTRGESQL | sort
 
 
 exec /ib/appl/docker-entrypoint.sh -b 0.0.0.0 -bmanagement 0.0.0.0
