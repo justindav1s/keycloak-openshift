@@ -7,8 +7,13 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
-export KEYCLOAK_LOGLEVEL=INFO
+echo KEYCLOAK VARIABLES
+env | grep KEYCLOAK
 
-env
+echo ""
+
+echo POSTRGESQL VARIABLES
+env | grep POSTRGESQL
+
 
 exec /ib/appl/docker-entrypoint.sh -b 0.0.0.0 -bmanagement 0.0.0.0
