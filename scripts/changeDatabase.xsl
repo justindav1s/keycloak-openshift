@@ -11,8 +11,8 @@
             <ds:connection-url>jdbc:postgresql://${env.POSTGRESQL_PORT_5432_TCP_ADDR}:${env.POSTGRESQL_PORT_5432_TCP_PORT:5432}/${env.POSTGRES_DATABASE:keycloak}</ds:connection-url>
             <ds:driver>postgresql</ds:driver>
             <ds:security>
-                <ds:user-name>${env.POSTGRES_USER:keycloak}</ds:user-name>
-                <ds:password>${env.POSTGRES_PASSWORD:password}</ds:password>
+                <ds:user-name>${env.POSTGRESQL_USER:keycloak}</ds:user-name>
+                <ds:password>${env.POSTGRESQL_PASSWORD:password}</ds:password>
             </ds:security>
             <ds:validation>
                 <ds:check-valid-connection-sql>SELECT 1</ds:check-valid-connection-sql>
